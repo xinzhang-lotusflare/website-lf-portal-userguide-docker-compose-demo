@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  mysql:
+    image: "mysql:8.0.33-debian"
+    environment:
+      MYSQL_DATABASE: "strapi"
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "strapi"
+      MYSQL_PASSWORD: "strapi"
+    volumes:
+      - ./_data8:/data
+      # This is needed if using npm module `mysql`
+      # - ./lf_mysql.cnf:/etc/mysql/conf.d/lf_mysql.cnf
+
+  mysql57:
+    image: "mysql:5.7.42-debian"
+    environment:
+      MYSQL_DATABASE: "strapi"
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_USER: "strapi"
+      MYSQL_PASSWORD: "strapi"
+    volumes:
+      - ./_data57:/data
+
+  postgres:
+    image: "postgres:15.2-alpine"
+    volumes:
+      - ./_data_pg:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_USER: "strapi"
+      POSTGRES_PASSWORD: "strapi"
+      POSTGRES_DB: "strapi"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+
+  app:
+    image: "the-app" # UPDATE this
+    environment:
+      DATABASE_CLIENT: "mysql" # This follows the name of npm module: `mysql`, or `mysql2`
+      DATABASE_HOST: "mysql" # Options: 'mysql', 'mysql57' or 'postgres'
+      APP_KEYS: IIEnBRR4VewOnQcj/w1NTg==,CFjF8S97YSND4E8/wmjaoA==,2KWIjc+f1JvnDyBU+L/u3w==,/MpifKhw+OH9JTAdWP60kg==
+      API_TOKEN_SALT: qSRF175ombV4FD7euM+gnQ==
+      ADMIN_JWT_SECRET: y7MEeoWhnMhtZ/wxH8cwGQ==
+      TRANSFER_TOKEN_SALT: hKERtu4rbdgHqhCgs5bGsA==
+      JWT_SECRET: t+Y86602pYXPcdBp091eQg==
